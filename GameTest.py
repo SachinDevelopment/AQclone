@@ -11,7 +11,7 @@ white = (255,255,255)
 
 clock = pygame.time.Clock()
 crashed = False
-carImg = pygame.image.load('Images/tangleroot.png')
+carImg = pygame.image.load('./Images/tangleroot.png')
 
 def car(x,y):
     gameDisplay.blit(carImg, (x,y))
