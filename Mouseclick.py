@@ -1,11 +1,11 @@
 import pygame
 
 pygame.init()
-width=350;
+width=400;
 height=400
 screen = pygame.display.set_mode( (width, height ) )
 pygame.display.set_caption('clicked on image')
-redSquare = pygame.image.load("./Images/tangleroot.PNG").convert()
+redSquare = pygame.image.load(".\Images\Combat_menu.PNG").convert()
 
 x = 20; # x coordnate of image
 y = 30; # y coordinate of image
