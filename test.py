@@ -1,40 +1,76 @@
 import sys
 import pygame
+from time import sleep
 
-
-size = width, height = 600, 600
+size = width, height = 800, 600
 black = 0, 0, 0
 
 screen = pygame.display.set_mode(size)
 
 class Player(object):
     def __init__(self):
-        self.rect = pygame.image.load("Images\Artixv2.png").get_rect()
-    
-    def player_move(self):
+        self.image = pygame.image.load("Images\Artixv2.png")
+        self.x = 10
+        self.y = 500
+        self.isJumping = 0
+        self.velocity = 5
+        self.mass = 2
+
+    def playerMove(self,distance):
+       # self.playerJump()
+        print('trying to move player')
         key = pygame.key.get_pressed()
-        if key[pygame.K_LEFT]:
-            self.rect.move_ip(-1,0)
-        elif key[pygame.K_RIGHT]:
-            self.rect.move_ip(1,0)
-        elif key[pygame.K_UP]:
-            self.rect.move_ip(0,-1)
-        elif key[pygame.K_DOWN]:
-            self.rect.move_ip(0,1)
+        if key[pygame.K_a]:
+            print('moving left')
+            self.x-=distance
+        elif key[pygame.K_d]:
+            print('moving right')
+            self.x+=distance
+        elif key[pygame.K_SPACE]:
+            print('moving up')
+            self.isJumping = 1
+
+
+    def playerJump(self):
+        #calc force
+        print('jump method initiated')
+        if self.isJumping:
+            if self.velocity > 0:
+                force = (.5 * self.mass * self.velocity**2)
+            else:
+                force = -(.5 * self.mass * self.velocity**2)
+            #change pos
+            self.y-=force
+
+            #change velocity
+            self.velocity-=1
+
+            #Checking is ground has been reached
+            if(self.y >= 500):
+                self.y=500
+                self.isJumping = 0
+                self.velocity = 10
+                print('jump set to 0')
+        #print(self.x,self.y)
      
     def draw(self, surface):
-        pygame.draw.rect(surface, (0, 0, 128), self.rect)
+        surface.blit(self.image, (self.x,self.y))
 
 pygame.init()
 player = Player()       
-
+background = pygame.image.load("Images\sunset.jpg")
 clock = pygame.time.Clock()
+
+
 while 1:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
     
-    screen.fill(black)
+    screen.blit(background,(0,0))
+    #screen.fill((0,0,0))
     player.draw(screen)
-    player.player_move()
-    pygame.display.update()
-    clock.tick(100)
+    pygame.event.pump()
+    player.playerMove(1)
+    player.playerJump()
+    pygame.display.flip()
+    sleep(2)
