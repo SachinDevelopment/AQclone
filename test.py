@@ -11,22 +11,25 @@ class Player(object):
     def __init__(self):
         self.image = pygame.image.load("Images\Artixv2.png")
         self.x = 10
-        self.y = 500
+        self.y = 390
         self.isJumping = 0
-        self.velocity = 5
+        self.velocity = 8
         self.mass = 2
+        #added due to jump method taking away from velocity  stopping player movement while in the air
+        self.speed = abs(self.velocity)
+       
 
-    def playerMove(self,distance):
+    def playerMove(self):
        # self.playerJump()
         print('trying to move player')
         key = pygame.key.get_pressed()
         if key[pygame.K_a]:
             print('moving left')
-            self.x-=distance
-        elif key[pygame.K_d]:
+            self.x-=self.speed
+        if key[pygame.K_d]:
             print('moving right')
-            self.x+=distance
-        elif key[pygame.K_SPACE]:
+            self.x+=self.speed
+        if key[pygame.K_SPACE]:
             print('moving up')
             self.isJumping = 1
 
@@ -44,14 +47,14 @@ class Player(object):
 
             #change velocity
             self.velocity-=1
+            print(self.velocity)
 
             #Checking is ground has been reached
-            if(self.y >= 500):
-                self.y=500
+            if(self.y >= 390):
                 self.isJumping = 0
-                self.velocity = 10
+                self.velocity = 8
                 print('jump set to 0')
-        #print(self.x,self.y)
+        print(self.x,self.y)
      
     def draw(self, surface):
         surface.blit(self.image, (self.x,self.y))
@@ -70,7 +73,7 @@ while 1:
     #screen.fill((0,0,0))
     player.draw(screen)
     pygame.event.pump()
-    player.playerMove(1)
+    player.playerMove()
     player.playerJump()
     pygame.display.flip()
-    sleep(2)
+    sleep(.03)
